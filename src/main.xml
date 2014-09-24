@@ -141,9 +141,28 @@ var BallBehavior = function (delta) {
 	trace("Screen Resolution:"+container.width + ":" + container.height);
 }
 	
+var executeCommand = function (data)
+{
+	command = data.command;
+	switch(command)
+	{
+		case "updatePosition":
+		
+			var target = data.target;
+			var x = data.x;
+			var y = data.y;
+			ImageDictionary[target].x = x;
+			ImageDictionary[target].y = y;
+			trace("move "+target + " to ("+x+":"+y+")");
+		break;
+		
+		default:
+		break;
+	}
+}
 	
 		// port will be chosen from 9300 to 9399
-		var serverPort = 9300 + Math.floor(Math.random() * 100);
+		var serverPort = 9300;
 		//var serverName = "Server Port:" + serverPort;
 		trace("Server Port"+serverPort);
 
@@ -185,7 +204,11 @@ var BallBehavior = function (delta) {
 	
 			conn.onmessage = function(e) {
 			
-				ImageDictionary["eye"].x += 10;
+				var message = JSON.parse(e.data);
+			
+				executeCommand(message);
+				//trace("command:"+message.command);
+				//ImageDictionary["eye"].x += 10;
 			};
 	
 			conn.onclose = function(e) {
