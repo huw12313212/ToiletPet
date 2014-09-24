@@ -151,9 +151,9 @@ var executeCommand = function (data)
 			var target = data.target;
 			var x = data.x;
 			var y = data.y;
-			ImageDictionary[target].x = x;
-			ImageDictionary[target].y = y;
-			trace("move "+target + " to ("+x+":"+y+")");
+			ImageDictionary[target].x = x - 200/2 ;//- ImageDictionary[target].width/2;
+			ImageDictionary[target].y = y - 190/2;//- ImageDictionary[target].height/2;
+			//trace("move "+target + " to ("+x+":"+y+")");
 		break;
 		
 		default:
