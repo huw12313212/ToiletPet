@@ -90,9 +90,9 @@
 var ImageDictionary = {};
 
 //Constructor
-var BallBehavior = function (delta) {
-	this.dx = delta;
-	this.dy = delta;
+var BallBehavior = function () {
+	
+
 }
 
 	//BallBehavior Definition
@@ -107,15 +107,13 @@ var BallBehavior = function (delta) {
 		onDisplaying: {
 			value: function(image) {
 				image.start();
-				this.width = image.container.width - image.width;
-				this.height = image.container.height - image.height;
 			}
 		},
 		onTimeChanged: {
 			value: function(image) 
 			{
-				var lerpingX = this.x * this.lerpRatio + image.position.x * (1-this.lerpRatio);
-				var lerpingY = this.y * this.lerpRatio + image.position.y * (1-this.lerpRatio);
+				var lerpingX = (this.x-image.width/2) * this.lerpRatio + image.position.x * (1-this.lerpRatio);
+				var lerpingY = (this.y-image.height/2) * this.lerpRatio + image.position.y * (1-this.lerpRatio);
 				image.position = {x:lerpingX,y:lerpingY};
 			}
 		},
@@ -131,9 +129,9 @@ var BallBehavior = function (delta) {
 	var eyeSkin = new Skin(eyeTexture, {x:0, y:0, width:200, height:190}, 0, 0);
 	var eye = new Content({left:0, width: 200, top: 0, height: 190}, eyeSkin);
 	//eye.scale = {x:2,y:2};
-	eye.behavior = new BallBehavior(6);
-	eye.behavior.x = container.width /2 - 200/2;
-	eye.behavior.y = container.height /2 - 190/2;
+	eye.behavior = new BallBehavior();
+	eye.behavior.x = container.width /2;
+	eye.behavior.y = container.height /2;
 	eye.variant = 0;
 	container.add(eye);
 	ImageDictionary["eye"] = eye.behavior;
@@ -151,8 +149,8 @@ var executeCommand = function (data)
 			var target = data.target;
 			var x = data.x;
 			var y = data.y;
-			ImageDictionary[target].x = x - 200/2 ;//- ImageDictionary[target].width/2;
-			ImageDictionary[target].y = y - 190/2;//- ImageDictionary[target].height/2;
+			ImageDictionary[target].x = x - ImageDictionary[target].width/2;
+			ImageDictionary[target].y = y - ImageDictionary[target].height/2;
 			//trace("move "+target + " to ("+x+":"+y+")");
 		break;
 		
