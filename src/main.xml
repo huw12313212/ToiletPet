@@ -86,14 +86,99 @@
 <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
 	<script><![CDATA[
+	
+
+//Constructor
+var BallBehavior = function (delta) {
+	this.dx = delta;
+	this.dy = delta
+}
+
+	//BallBehavior Definition
+	BallBehavior.prototype = Object.create(Object.prototype, {
+		dx: { value: 5, writable: true },
+		dy: { value: 5, writable: true },
+		x: { value: 0, writable: true },
+		y: { value: 0, writable: true },
+		width: { value: 0, writable: true },
+		height: { value: 0, writable: true },
+		onDisplaying: {
+			value: function(ball) {
+				ball.start();
+				this.width = ball.container.width - ball.width;
+				this.height = ball.container.height - ball.height;
+			}
+		},
+		onTimeChanged: {
+			value: function(ball) {
+				var dx = this.dx;
+				var dy = this.dy;
+				ball.moveBy(dx, dy);
+				var x = ball.x - ball.container.x;
+				var y = ball.y - ball.container.y;
+				if ((x < 0) || (x > this.width)) dx = -dx;
+				if ((y < 0) || (y > this.height)) dy = -dy;
+				this.dx = dx;
+				this.dy = dy;
+			}
+		},
+	});
+	
+	
+	var build = function(container) {
+	container.skin = new Skin("white");
+	
+	
+	var ballTexture = new Texture("balls.png");
+																		//Variants - Horizontal Offset   //States - Vertical Offset
+	var ballSkin = new Skin(ballTexture, {x:0, y:0, width:30, height:30}, 30, 0);
+	var ball = new Content({left:0, width: 30, top: 0, height: 30}, ballSkin);
+	ball.behavior = new BallBehavior(6);
+	ball.variant = 0;
+	container.add(ball);
+	var ball = new Content({right:0, width: 30, top: 0, height: 30}, ballSkin);
+	ball.behavior = new BallBehavior(5);
+	ball.variant = 1;
+	container.add(ball);
+	var ball = new Content({right:0, width: 30, bottom: 0, height: 30}, ballSkin);
+	ball.behavior = new BallBehavior(4);
+	ball.variant = 2;
+	container.add(ball);
+	var ball = new Content({left:0, width: 30, bottom: 0, height: 30}, ballSkin);
+	ball.behavior = new BallBehavior(3);
+	ball.variant = 3;
+	container.add(ball);
+}
+	
+	
+	
+	
+	
+	
 		// port will be chosen from 9300 to 9399
 		var serverPort = 9300 + Math.floor(Math.random() * 100);
 		var serverName = "Chat room #" + serverPort;
+		trace(serverName);
 
-		application.behavior = new ApplicationBehavior();
+		application.behavior = 
+		{
+			onAdapt: function(application) {
+				application.empty();
+				build(application);
+			},
+			onLaunch: function(application) {
+				build(application);
+				application.shared = true;
+			},
+			onQuit: function(application)
+			{
+				application.shared = false;
+			}
+		}
+		
 		var data = {};
 		var stage = new ChatServer(data);
-		application.add(stage);
+		//application.add(stage);
 	
 		var messages = [];
 		var connections = [];
@@ -130,12 +215,14 @@
 	
 			conn.onmessage = function(e) {
 			
+			trace("test:"+e.data);
+			
 				color = randomColor();
-				log(e.data, color);
+				//log(e.data, color);
 			};
 	
 			conn.onclose = function(e) {
-				if (user) log("-GONE: " + user);
+				//if (user) log("-GONE: " + user);
 	
 				var i = connections.indexOf(conn);
 				if (i >= 0) connections.splice(i, 1);
