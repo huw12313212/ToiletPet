@@ -25,7 +25,7 @@
     
 	<skin id="whiteSkin" color="white"/>
 
-	<style id="defaultStyle" align="left"/>
+	<style id="defaultStyle" align="left"/>w
 
 <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 <!-- BEHAVIORS -->
@@ -87,11 +87,12 @@
 
 	<script><![CDATA[
 	
+var ImageDictionary = {};
 
 //Constructor
 var BallBehavior = function (delta) {
 	this.dx = delta;
-	this.dy = delta
+	this.dy = delta;
 }
 
 	//BallBehavior Definition
@@ -102,6 +103,7 @@ var BallBehavior = function (delta) {
 		y: { value: 0, writable: true },
 		width: { value: 0, writable: true },
 		height: { value: 0, writable: true },
+		lerpRatio: { value: 0.3, writable: true },
 		onDisplaying: {
 			value: function(ball) {
 				ball.start();
@@ -110,16 +112,11 @@ var BallBehavior = function (delta) {
 			}
 		},
 		onTimeChanged: {
-			value: function(ball) {
-				var dx = this.dx;
-				var dy = this.dy;
-				ball.moveBy(dx, dy);
-				var x = ball.x - ball.container.x;
-				var y = ball.y - ball.container.y;
-				if ((x < 0) || (x > this.width)) dx = -dx;
-				if ((y < 0) || (y > this.height)) dy = -dy;
-				this.dx = dx;
-				this.dy = dy;
+			value: function(ball) 
+			{
+				var lerpingX = this.x * this.lerpRatio + ball.position.x * (1-this.lerpRatio);
+				var lerpingY = this.y * this.lerpRatio + ball.position.y * (1-this.lerpRatio);
+				ball.position = {x:lerpingX,y:lerpingY};
 			}
 		},
 	});
@@ -136,18 +133,9 @@ var BallBehavior = function (delta) {
 	ball.behavior = new BallBehavior(6);
 	ball.variant = 0;
 	container.add(ball);
-	var ball = new Content({right:0, width: 30, top: 0, height: 30}, ballSkin);
-	ball.behavior = new BallBehavior(5);
-	ball.variant = 1;
-	container.add(ball);
-	var ball = new Content({right:0, width: 30, bottom: 0, height: 30}, ballSkin);
-	ball.behavior = new BallBehavior(4);
-	ball.variant = 2;
-	container.add(ball);
-	var ball = new Content({left:0, width: 30, bottom: 0, height: 30}, ballSkin);
-	ball.behavior = new BallBehavior(3);
-	ball.variant = 3;
-	container.add(ball);
+	ImageDictionary["ball"] = ball.behavior;
+
+
 }
 	
 	
@@ -200,7 +188,8 @@ var BallBehavior = function (delta) {
 			log("server is ready to accept new connection");
 		};
 		server.onconnect = function(conn, options) {
-			log("-CONNECT");
+			//log("-CONNECT");
+			trace("Contronller Connected \n");
 	
 			var user = undefined;
 			var color = undefined;
@@ -215,10 +204,8 @@ var BallBehavior = function (delta) {
 	
 			conn.onmessage = function(e) {
 			
-			trace("test:"+e.data);
 			
-				color = randomColor();
-				//log(e.data, color);
+				ImageDictionary["ball"].x += 10;
 			};
 	
 			conn.onclose = function(e) {
