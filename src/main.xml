@@ -88,6 +88,21 @@
 	<script><![CDATA[
 	
 var ImageDictionary = {};
+var SoundDictionary = {};
+
+var sound;
+
+sound = new Sound( mergeURI( application.url, "assets/ahahaha.mp3" ));
+SoundDictionary["assets/ahahaha.mp3"] = sound;
+
+sound = new Sound( mergeURI( application.url, "assets/Shutter-02.wav" ));
+SoundDictionary["assets/Shutter-02.wav"] = sound;
+
+
+
+
+Sound.volume = 1.0;
+
 
 //Constructor
 var BallBehavior = function () {
@@ -153,6 +168,15 @@ var executeCommand = function (data)
 			ImageDictionary[target].y = y - ImageDictionary[target].height/2;
 			//trace("move "+target + " to ("+x+":"+y+")");
 		break;
+		case "playSound":
+			
+			var target = data.target;
+			var currentSound = SoundDictionary[target];
+			var volume = data.volume;
+			Sound.volume = volume;
+			currentSound.play();
+			
+		break;
 		
 		default:
 		break;
@@ -186,6 +210,8 @@ var executeCommand = function (data)
 			//log("server is ready to accept new connection");
 		};
 		server.onconnect = function(conn, options) {
+		
+			//sound.play();
 			//log("-CONNECT");
 			trace("Contronller Connected \n");
 	
