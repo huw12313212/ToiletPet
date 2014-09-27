@@ -89,6 +89,7 @@
 	
 var ImageDictionary = {};
 var SoundDictionary = {};
+var currentPic;
 
 var sound;
 
@@ -118,7 +119,9 @@ var BallBehavior = function () {
 		y: { value: 0, writable: true },
 		width: { value: 0, writable: true },
 		height: { value: 0, writable: true },
-		lerpRatio: { value: 0.3, writable: true },
+		//lerpRatio: { value: 0.3, writable: true },
+		lerpRatio: { value: 1, writable: true },
+		main: { value: false, writable: true },
 		onDisplaying: {
 			value: function(image) {
 				image.start();
@@ -127,29 +130,123 @@ var BallBehavior = function () {
 		onTimeChanged: {
 			value: function(image) 
 			{
+				
 				var lerpingX = (this.x-image.width/2) * this.lerpRatio + image.position.x * (1-this.lerpRatio);
 				var lerpingY = (this.y-image.height/2) * this.lerpRatio + image.position.y * (1-this.lerpRatio);
 				image.position = {x:lerpingX,y:lerpingY};
+				
+				
+				
+				if(this.main)
+				{
+					var currentAnimationData = animationDefinition[CurrentAnimation];
+					var currentState = currentAnimationData[AnimationIndex];
+					var time = currentState.time;
+					
+					if(time == -1)return;
+					
+					AnimationCounter++;
+					
+					if(AnimationCounter>=time)
+					{
+						AnimationCounter = 0;
+						AnimationIndex++;
+						AnimationIndex = AnimationIndex%currentAnimationData.length;
+						currentState = currentAnimationData[AnimationIndex];
+						setCurrent(currentState.name);
+					}
+					
+					//trace("main");
+				}
+			
+				
 			}
 		},
 	});
 	
+	var setCurrent = function(name)
+	{
+		if(currentPic == name)return;
+	
+		var current;
+			if(currentPic != null)
+			{
+			    current = ImageDictionary[currentPic];
+				current.lerpRatio = 1;
+				current.x = 1000;
+				current.y = 1000;
+			}
+			
+			currentPic = name;
+			current = ImageDictionary[name];
+			current.lerpRatio = 1;
+			current.x = 340/2;
+			current.y = 240/2;
+	}
+	
+	
+	var images = ["0normal-1","0normal-2","0normal-3","0normal-4",
+				  "1leftRight-1","1leftRight-2","1leftRight-3","1leftRight-4",
+				  "2happy-1","2happy-2","2happy-3",
+				  "3angry-1","3angry-2","3angry-3"];
+				  
+	var animationDefinition = 
+	{
+		"Normal" : [{"name":"0normal-1","time":60},
+					{"name":"0normal-2","time":3},
+					{"name":"0normal-3","time":3},
+					{"name":"0normal-4","time":3},
+					{"name":"0normal-1","time":120},
+					],
+		
+	};
+	
+	var CurrentAnimation = "Normal";
+	var AnimationCounter = 0;
+	var AnimationIndex = 0;
+	
+	var PlayAnimation = function(animationName)
+	{
+		CurrentAnimation = animationName;
+		AnimationCounter = 0;
+		AnimationIndex = 0;
+	}
 	
 	var build = function(container) {
 	container.skin = new Skin("white");
 	
+	var eyeTexture;
+	var eyeSkin;
+	var eye;
 	
-	var eyeTexture = new Texture("eye.png");
-																		//Variants - Horizontal Offset   //States - Vertical Offset
-	var eyeSkin = new Skin(eyeTexture, {x:0, y:0, width:200, height:190}, 0, 0);
-	var eye = new Content({left:0, width: 200, top: 0, height: 190}, eyeSkin);
-	//eye.scale = {x:2,y:2};
-	eye.behavior = new BallBehavior();
-	eye.behavior.x = container.width /2;
-	eye.behavior.y = container.height /2;
-	eye.variant = 0;
-	container.add(eye);
-	ImageDictionary["eye"] = eye.behavior;
+	for(var i = 0 ; i<images.length ; i++)
+	{
+		var image = images[i];
+	
+		eyeTexture = new Texture(image+".png");																	//Variants - Horizontal Offset   //States - Vertical Offset
+	    eyeSkin = new Skin(eyeTexture, {x:0, y:0, width:237, height:240}, 0, 0);
+	    eye = new Content({left:0, width: 237, top: 0, height: 240}, eyeSkin);
+		//eye.scale = {x:2,y:2};
+		eye.behavior = new BallBehavior();
+
+		eye.variant = 0;
+		container.add(eye);
+		ImageDictionary[image] = eye.behavior;
+		
+		if(i==0)
+		{
+			eye.behavior.main = true;
+		}
+		
+			eye.behavior.x = 1000;
+			eye.behavior.y = 1000;
+		
+		//ImageDictionary["eye"] = eye.behavior;
+	}
+	
+	setCurrent("0normal-1");
+	
+
 	
 	trace("Screen Resolution:"+container.width + ":" + container.height);
 	
@@ -234,7 +331,8 @@ var executeCommand = function (data)
 				
 				
 			},
-			onLaunch: function(application) {
+			onLaunch: function(application) 
+			{
 				//build(application);
 				application.shared = true;
 			},
