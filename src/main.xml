@@ -196,20 +196,66 @@ var BallBehavior = function () {
 					{"name":"0normal-2","time":3},
 					{"name":"0normal-3","time":3},
 					{"name":"0normal-4","time":3},
+					{"name":"0normal-3","time":3},
+					{"name":"0normal-2","time":3},
 					{"name":"0normal-1","time":120},
 					],
+		"LeftRight" : [{"name":"1leftRight-1","time":60},
+					{"name":"1leftRight-2","time":20},
+					{"name":"1leftRight-1","time":3},
+					{"name":"1leftRight-3","time":20},
+					{"name":"1leftRight-4","time":120},
+					],
+		"Happy" : [{"name":"2happy-1","time":60},
+			{"name":"2happy-2","time":3},
+			{"name":"2happy-3","time":3},
+			{"name":"2happy-1","time":120},
+			],
+		"Angry" : [{"name":"3angry-1","time":60},
+			{"name":"3angry-2","time":3},
+			{"name":"3angry-3","time":3},
+			{"name":"3angry-1","time":120},
+			],
+		"All": [{"name":"0normal-1","time":60},
+					{"name":"0normal-2","time":3},
+					{"name":"0normal-3","time":3},
+					{"name":"0normal-4","time":3},
+					{"name":"0normal-3","time":3},
+					{"name":"0normal-2","time":3},
+					{"name":"0normal-1","time":120},
+					{"name":"1leftRight-1","time":60},
+					{"name":"1leftRight-2","time":20},
+					{"name":"1leftRight-1","time":3},
+					{"name":"1leftRight-3","time":20},
+					{"name":"1leftRight-4","time":120},
+					{"name":"2happy-1","time":60},
+					{"name":"2happy-2","time":3},
+					{"name":"2happy-3","time":3},
+					{"name":"2happy-1","time":120},
+					{"name":"3angry-1","time":60},
+					{"name":"3angry-2","time":3},
+					{"name":"3angry-3","time":3},
+					{"name":"3angry-1","time":120},
+			],
+					
+					
 		
 	};
 	
-	var CurrentAnimation = "Normal";
+	var CurrentAnimation; //"Normal";
 	var AnimationCounter = 0;
 	var AnimationIndex = 0;
 	
 	var PlayAnimation = function(animationName)
 	{
+
 		CurrentAnimation = animationName;
 		AnimationCounter = 0;
 		AnimationIndex = 0;
+		
+		var currentAnimationData = animationDefinition[CurrentAnimation];
+		var currentState = currentAnimationData[AnimationIndex];
+		setCurrent(currentState.name);
 	}
 	
 	var build = function(container) {
@@ -244,8 +290,8 @@ var BallBehavior = function () {
 		//ImageDictionary["eye"] = eye.behavior;
 	}
 	
-	setCurrent("0normal-1");
-	
+	//setCurrent("0normal-1");
+	PlayAnimation("All");
 
 	
 	trace("Screen Resolution:"+container.width + ":" + container.height);
