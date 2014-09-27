@@ -152,6 +152,27 @@ var BallBehavior = function () {
 	ImageDictionary["eye"] = eye.behavior;
 	
 	trace("Screen Resolution:"+container.width + ":" + container.height);
+	
+	
+		application.invoke(new MessageWithObject( "pins:configure", {
+		    light1: {
+		        require: "led",
+		        pins: {
+		            led: {pin: 3}
+		        }
+		    },
+		    light2: {
+		        require: "led",
+		        pins: {
+		            led: {pin: 4}
+		        }
+		    }
+		}));
+		
+		
+		
+		application.invoke(new MessageWithObject("pins:/light1/turnOn"));
+		application.invoke(new MessageWithObject("pins:/light2/turnOn"));
 }
 	
 var executeCommand = function (data)
@@ -177,6 +198,23 @@ var executeCommand = function (data)
 			currentSound.play();
 			
 		break;
+		case "servo":
+			var target = data.target;
+			var value = data.value;
+
+				if(value)
+				{
+					application.invoke(new MessageWithObject("pins:/light1/turnOn"));
+					application.invoke(new MessageWithObject("pins:/light2/turnOn"));
+					trace("turn on \n");
+				}
+				else
+				{
+					application.invoke(new MessageWithObject("pins:/light1/turnOff"));
+					application.invoke(new MessageWithObject("pins:/light2/turnOff"));
+					trace("turn off \n");             m,                                                                 
+				}
+		break;
 		
 		default:
 		break;
@@ -191,8 +229,10 @@ var executeCommand = function (data)
 		application.behavior = 
 		{
 			onAdapt: function(application) {
-				application.empty();
+				//application.empty();
 				build(application);
+				
+				
 			},
 			onLaunch: function(application) {
 				//build(application);
@@ -250,5 +290,20 @@ var executeCommand = function (data)
 		};
 	
 		log("server is launching on port " + serverPort);
+		
+
+		
+		/*
+	  application.invoke( new MessageWithObject( "pins:configure", {
+	    	motor: {
+	            require: "servo",
+	            pins: {
+	                servo: { pin: 28 }
+	            }
+	        }
+	    }));
+		
+		application.invoke(new MessageWithObject("pins:/motor/rotate"));*/	
+		
 	]]></script>
 </program>
