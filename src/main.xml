@@ -143,15 +143,36 @@ var BallBehavior = function () {
 					var currentState = currentAnimationData[AnimationIndex];
 					var time = currentState.time;
 					
-					if(time == -1)return;
+					
+					
+					if(AnimationDone)return;
 					
 					AnimationCounter++;
 					
 					if(AnimationCounter>=time)
 					{
+						if(RandomJumping)
+						{
+							if(AnimationIndex == currentAnimationData.length-1)
+							{
+								setRandomAnimation();
+								return;
+							}
+						}
+						
+						
+						if(!Looping)
+						{
+							if(AnimationIndex == currentAnimationData.length-1)
+							{
+								AnimationDone = true;
+								return;
+							}
+						}
+					
 						AnimationCounter = 0;
 						AnimationIndex++;
-						AnimationIndex = AnimationIndex%currentAnimationData.length;
+						AnimationIndex = AnimationIndex % currentAnimationData.length;
 						currentState = currentAnimationData[AnimationIndex];
 						setCurrent(currentState.name);
 					}
@@ -164,6 +185,20 @@ var BallBehavior = function () {
 		},
 	});
 	
+	var setRandomAnimation = function()
+	{
+		var keyArray = Object.keys(animationDefinition);
+		
+		var randomNext = (Math.floor(Math.random()*10000000)) % keyArray.length;
+		var jumpTo = keyArray[randomNext];
+		PlayAnimation(jumpTo);
+	}
+	
+	var resetAnimation = function()
+	{
+		PlayAnimation(CurrentAnimation);
+	}
+
 	var setCurrent = function(name)
 	{
 		if(currentPic == name)return;
@@ -249,10 +284,13 @@ var BallBehavior = function () {
 	var CurrentAnimation; //"Normal";
 	var AnimationCounter = 0;
 	var AnimationIndex = 0;
+	var Looping = false;
+	var RandomJumping = false;
+	var AnimationDone = false;
 	
 	var PlayAnimation = function(animationName)
 	{
-
+		AnimationDone = false;
 		CurrentAnimation = animationName;
 		AnimationCounter = 0;
 		AnimationIndex = 0;
@@ -359,8 +397,26 @@ var executeCommand = function (data)
 				{
 					application.invoke(new MessageWithObject("pins:/light1/turnOff"));
 					application.invoke(new MessageWithObject("pins:/light2/turnOff"));
-					trace("turn off \n");             m,                                                                 
+					trace("turn off \n");                                                                 
 				}
+		break;
+		
+		case "playAnimation":
+		var name = data.name;
+		PlayAnimation(name);
+		break;
+		
+		case "loop":
+		Looping = data.value;
+		if(AnimationDone)resetAnimation();
+		trace("loop:"+Looping);
+		
+		break;
+		case "random":
+		RandomJumping = data.value;
+		if(AnimationDone)setRandomAnimation();
+		//RandomJumping = value;
+		trace("random:"+RandomJumping);
 		break;
 		
 		default:
