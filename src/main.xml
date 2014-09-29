@@ -91,13 +91,25 @@ var ImageDictionary = {};
 var SoundDictionary = {};
 var currentPic;
 
+var soundList = ["assets/Ahahaha.mp3","assets/Baber.mp3","assets/BatBat.mp3","assets/BossAhh.mp3","assets/Fight.mp3","assets/Hehehe.mp3",
+				"assets/Hello.mp3","assets/SleepSong.mp3","assets/YupLaLoDoo.mp3"];
+
+
+
 var sound;
+for(var i = 0;i<soundList.length;i++)
+{
+	var soundName = soundList[i];
+	sound = new Sound( mergeURI( application.url, soundName ));
+	SoundDictionary[soundName] = sound;
+}
 
-sound = new Sound( mergeURI( application.url, "assets/ahahaha.mp3" ));
-SoundDictionary["assets/ahahaha.mp3"] = sound;
 
-sound = new Sound( mergeURI( application.url, "assets/Shutter-02.wav" ));
-SoundDictionary["assets/Shutter-02.wav"] = sound;
+
+
+
+//sound = new Sound( mergeURI( application.url, "assets/Shutter-02.wav" ));
+//SoundDictionary["assets/Shutter-02.wav"] = sound;
 
 
 
