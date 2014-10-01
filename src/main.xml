@@ -92,7 +92,7 @@ var SoundDictionary = {};
 var currentPic;
 
 var soundList = ["assets/Ahahaha.mp3","assets/Baber.mp3","assets/BatBat.mp3","assets/BossAhh.mp3","assets/Fight.mp3","assets/Hehehe.mp3",
-				"assets/Hello.mp3","assets/SleepSong.mp3","assets/YupLaLoDoo.mp3"];
+				"assets/Hello.mp3","assets/SleepSong.mp3","assets/YupLaLoDoo.mp3", "assets/What.mp3"];
 
 
 
