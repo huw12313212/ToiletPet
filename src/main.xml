@@ -235,7 +235,11 @@ var BallBehavior = function () {
 	var images = ["0normal-1","0normal-2","0normal-3","0normal-4",
 				  "1leftRight-1","1leftRight-2","1leftRight-3","1leftRight-4",
 				  "2happy-1","2happy-2","2happy-3",
-				  "3angry-1","3angry-2","3angry-3"];
+				  "3angry-1","3angry-2","3angry-3",
+				  "4love-1","4love-2","4love-3",
+				  "5shine-1","5shine-2","5shine-3",
+				  "6cry-1","6cry-2",
+				  "7dazzy-1","7dazzy-2","7dazzy-3","7dazzy-4"];
 				  
 	var animationDefinition = 
 	{
@@ -265,28 +269,91 @@ var BallBehavior = function () {
 			{"name":"3angry-2","time":3},
 			{"name":"3angry-1","time":180},
 			],
-		"All": [{"name":"0normal-1","time":3},
-					{"name":"0normal-2","time":3},
-					{"name":"0normal-3","time":3},
-					{"name":"0normal-4","time":3},
-					{"name":"0normal-3","time":3},
-					{"name":"0normal-2","time":3},
-					{"name":"0normal-1","time":120},
-					{"name":"1leftRight-1","time":3},
-					{"name":"1leftRight-2","time":20},
-					{"name":"1leftRight-1","time":3},
-					{"name":"1leftRight-3","time":20},
-					{"name":"1leftRight-4","time":120},
-					{"name":"2happy-1","time":3},
-					{"name":"2happy-2","time":3},
-					{"name":"2happy-3","time":3},
-					{"name":"2happy-2","time":3},
-					{"name":"2happy-1","time":180},
-					{"name":"3angry-1","time":3},
-					{"name":"3angry-2","time":3},
-					{"name":"3angry-3","time":3},
-					{"name":"3angry-2","time":3},
-					{"name":"3angry-1","time":180},
+		"Love" : [
+			{"name":"4love-2","time":30},
+			{"name":"4love-1","time":30},
+			{"name":"4love-2","time":30},
+			{"name":"4love-3","time":30},
+			{"name":"4love-2","time":30},
+			{"name":"4love-1","time":30},
+			{"name":"4love-2","time":30},
+			{"name":"4love-3","time":30},
+			{"name":"4love-2","time":30},
+			{"name":"4love-1","time":30},
+			{"name":"4love-2","time":30},
+			{"name":"4love-3","time":30},
+			{"name":"4love-2","time":30},
+			{"name":"4love-1","time":30},
+			{"name":"4love-2","time":30},
+			{"name":"4love-3","time":30},
+			{"name":"4love-2","time":30},
+			{"name":"4love-1","time":30},
+			{"name":"4love-2","time":30},
+			{"name":"4love-3","time":30},
+			{"name":"4love-2","time":30},
+			{"name":"4love-1","time":30},
+			{"name":"4love-2","time":30},
+			{"name":"4love-3","time":30},
+			],
+		"Shine" : [
+			{"name":"5shine-1","time":30},
+			{"name":"5shine-2","time":30},
+			{"name":"5shine-3","time":30},
+			{"name":"5shine-1","time":30},
+			{"name":"5shine-2","time":30},
+			{"name":"5shine-3","time":30},
+			{"name":"5shine-1","time":30},
+			{"name":"5shine-2","time":30},
+			{"name":"5shine-3","time":30},
+			{"name":"5shine-1","time":30},
+			{"name":"5shine-2","time":30},
+			{"name":"5shine-3","time":30},
+			{"name":"5shine-1","time":30},
+			{"name":"5shine-2","time":30},
+			{"name":"5shine-3","time":30},
+			{"name":"5shine-1","time":30},
+			{"name":"5shine-2","time":30},
+			{"name":"5shine-3","time":30},
+			],
+		"Cry" : [
+			{"name":"6cry-1","time":30},
+			{"name":"6cry-2","time":30},
+			{"name":"6cry-1","time":30},
+			{"name":"6cry-2","time":30},
+			{"name":"6cry-1","time":30},
+			{"name":"6cry-2","time":30},
+			{"name":"6cry-1","time":30},
+			{"name":"6cry-2","time":30},
+			{"name":"6cry-1","time":30},
+			{"name":"6cry-2","time":30},
+			{"name":"6cry-1","time":30},
+			{"name":"6cry-2","time":30},
+			{"name":"6cry-1","time":30},
+			{"name":"6cry-2","time":30},
+			{"name":"6cry-1","time":30},
+			{"name":"6cry-2","time":30},
+			{"name":"6cry-1","time":30},
+			{"name":"6cry-2","time":30},
+			
+			],
+		"Dazzy": 
+		[
+			{"name":"7dazzy-1","time":5},
+			{"name":"7dazzy-2","time":5},
+			{"name":"7dazzy-3","time":5},
+			{"name":"7dazzy-4","time":5},
+			{"name":"7dazzy-1","time":5},
+			{"name":"7dazzy-2","time":5},
+			{"name":"7dazzy-3","time":5},
+			{"name":"7dazzy-4","time":5},
+			{"name":"7dazzy-1","time":5},
+			{"name":"7dazzy-2","time":5},
+			{"name":"7dazzy-3","time":5},
+			{"name":"7dazzy-4","time":5},
+			{"name":"7dazzy-1","time":5},
+			{"name":"7dazzy-2","time":5},
+			{"name":"7dazzy-3","time":5},
+			{"name":"7dazzy-4","time":5},
 			],
 					
 					
@@ -296,7 +363,7 @@ var BallBehavior = function () {
 	var CurrentAnimation; //"Normal";
 	var AnimationCounter = 0;
 	var AnimationIndex = 0;
-	var Looping = false;
+	var Looping = true;
 	var RandomJumping = false;
 	var AnimationDone = false;
 	
@@ -345,7 +412,7 @@ var BallBehavior = function () {
 	}
 	
 	//setCurrent("0normal-1");
-	PlayAnimation("All");
+	PlayAnimation("Dazzy");
 
 	
 	trace("Screen Resolution:"+container.width + ":" + container.height);
