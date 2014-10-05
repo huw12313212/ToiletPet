@@ -92,7 +92,18 @@ var SoundDictionary = {};
 var currentPic;
 
 var soundList = ["assets/Ahahaha.mp3","assets/Baber.mp3","assets/BatBat.mp3","assets/BossAhh.mp3","assets/Fight.mp3","assets/Hehehe.mp3",
-				"assets/Hello.mp3","assets/SleepSong.mp3","assets/YupLaLoDoo.mp3", "assets/What.mp3"];
+				"assets/Hello.mp3","assets/SleepSong.mp3","assets/YupLaLoDoo.mp3", "assets/What.mp3"
+				, "assets/ByeBye.mp3"
+				, "assets/FunnyBoy.mp3"
+				, "assets/KidLaugh.mp3"
+				, "assets/LoveUDaddy.mp3"
+				, "assets/Nay.mp3"
+				, "assets/Pew.mp3"
+				, "assets/SillySnoring.mp3"
+				, "assets/ThatMine.mp3"
+				, "assets/BabyCry.mp3"
+				
+				];
 
 
 
@@ -295,7 +306,7 @@ var BallBehavior = function () {
 			{"name":"4love-2","time":30},
 			{"name":"4love-3","time":30},
 			],
-		"Shine" : [
+			"Shine" : [
 			{"name":"5shine-1","time":30},
 			{"name":"5shine-2","time":30},
 			{"name":"5shine-3","time":30},
@@ -314,6 +325,15 @@ var BallBehavior = function () {
 			{"name":"5shine-1","time":30},
 			{"name":"5shine-2","time":30},
 			{"name":"5shine-3","time":30},
+			],
+			"Shine1" : [
+			{"name":"5shine-1","time":1000},
+			],
+			"Shine2" : [
+			{"name":"5shine-2","time":1000},
+			],
+			"Shine3" : [
+			{"name":"5shine-3","time":1000},
 			],
 		"Cry" : [
 			{"name":"6cry-1","time":30},
