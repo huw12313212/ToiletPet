@@ -238,7 +238,7 @@ var BallBehavior = function () {
 			currentPic = name;
 			current = ImageDictionary[name];
 			current.lerpRatio = 1;
-			current.x = 340/2;
+			current.x = 320/2;
 			current.y = 240/2;
 	}
 	
